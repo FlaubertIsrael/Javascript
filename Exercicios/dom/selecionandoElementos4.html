@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Selecionar Elementos #04</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body class="conteudo exercicio">
+    <div>
+        <p>Início</p>
+    </div>
+    <div>
+        <ul>
+            <li>Pedro</li>
+            <li>Ana</li>
+            <li>Bia</li>
+        </ul>
+    </div>
+    <div>
+        <p>Fim</p>
+    </div>
+    <script>
+        function log() {
+            console.log(this)
+        }
+
+        HTMLCollection.prototype.log = log
+        HTMLElement.parentNode.log
+        NodeList.prototype.log = log
+        Node.prototype.log = log
+
+        const primeiro = lista.firstChild
+        primeiro.log()
+        primeiro.nextSibiling.log()
+
+        const ultimo = list.lastChild
+        ultimo.log()
+        ultimo.previousSibling.log()
+
+        const ultimo = lista.lastChild
+        ultimo.log()
+        ultimo.previousSibling.log()
+
+        lista.children.log()
+        lista.firstElementChild.log()
+        lista.lastElementChild.log()
+        lista.parentNode.previousElementSibiling.log()
+        lista.parentNode.nextElementSibiling.log()
+
+        document.querySelectorAll('div ul li').log()
+
+    </script>
+</body>
+
+</html>
