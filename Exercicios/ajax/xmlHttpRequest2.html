@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>XMLHttpRequest #02</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <style>
+        input[type=file] {
+            display: flex;
+            margin: 10px;
+            padding: 40px;
+            font-size: 40px;
+            background: crimson;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body class="conteudo exercicio">
+    <input type="file" name="arquivo" />
+    <div class="progresso"></div>
+
+    <script>
+        function ajaxUpload (config) { 
+            const xhr = new XMLHttpRequest()
+
+            if(xhr.uploap) { //Se o objeto upload estiver presente
+                xhr.upload.onprogress = e => { // Monitorando progresso do upload
+                    const atual = e.loaded
+                    const total = e.total
+                    const percentual = Math.floor(atual / total * 100)
+                    config.progresso({atual, total, percentual}) // Callback
+                }
+            }
+
+            xhr.open("post", config.url, true) // Requisição (metodo, url, assincrono)
+            xhr.send(config.formData)  // Passando o arquivo  
+        }
+        
+
+        document.querySelector('input[type=file]').onchange = e => { //Pegando elemento do tipo file no momento que o arquivo for selecionado
+            const formData = new FormData()
+            const inputFile = e.target  // Pegando o input
+            formData.append(inputFile.name, inputFile.files[0]) //Pegando o primeiro arquivo do tipo file de indice zero 
+
+            ajaxUpload({
+                url: "upload", // End point
+                formData: formData,
+                progresso(dados) {
+                    const progresso = document.querySelector('.progresso') // Obtendo a div
+                    progresso.innerHTML = JSON.stringify(dados) // Informando do progresso
+                }
+            })
+        }
+    </script>
+</body>

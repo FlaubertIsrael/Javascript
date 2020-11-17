@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>XMLHttpRequest #01</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+        function ajax(config) { // Função que recebe um objeto como parametro
+            const xhr = new XMLHttpRequest() 
+            xhr.open(config.metodo, config.url, true) // Abrindo uma requisição
+
+            xhr.onload = e => { // Evento
+                if (xhr.status === 200) {
+                    config.sucesso(xhr.response) // Sucesso na requisição
+                } else if (xhr.status >= 400) { 
+                    config.erro({
+                        codigo: xhr.status,    // Codigo do erro
+                        texto: xhr.statusText  // Texto do erro
+                    })
+                }
+          
+            }
+
+            xhr.send() //Envio da requisição             
+        }    
+        
+        function criarTabela (estados) {
+            const linhas = estados.map(estado => {  // Recebendo uma lista
+                const tdId = document.createElement('td')  
+                tdId.innerHTML = estado.id
+
+                const tdNome = document.createElement('td')
+                tdNome.innerHTML = estado.nome
+
+                const tdSigla = document.createElement('td')
+                tdSigla.innerHTML = estado.sigla
+
+                const tr = document.createElement('tr')  // Criando linha
+
+                tr.appendChild(tdId)
+                tr.appendChild(tdnome)
+                tr.appendChild(tdSigla)
+
+                return tr
+            })
+
+            const tabela = document.createElement('table')
+            linhas.forEach(linha => tabela.appendChild(linha)) // Adicionando linhas
+            document.body.appendChild(tabela)                  // Colocando tabela no body 
+        } 
+        
+        ajax({
+            url: "dados/estados.json",
+            metodo: "get",
+            sucesso(resposta) {
+                const estados = JSON.parse(resposta)  // Tratando a resposta
+                criarTabela(estados)
+            },
+            erro(e) { //Caso a requisição não seja bem sucedida
+                const msg = document.createTextNode(`${e.codigo}: ${e.texto}`) // Concatenando o codigo do erro como o texto do erro
+                document.body.appendChild(msg)                                                      
+            }
+        })
+
+    </script>
+</body>
